@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="/css/styleCadastro.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+
+<!-- AS TAGS E DIVS ESTAO COMO LOGIN POIS A PAGINA DO MESMO FOI REAPROVEITADAA-->
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <h2>Faça o seu cadastro</h2>
+                
+            </div>
+
+           
+            
+            <form class="login-form" id="loginForm" novalidate>
+
+                 <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="text" id="name" name="name" required autocomplete="name">
+                        <label for="name">Nome</label>
+                    </div>
+                     <span class="error-message" id="nameError"></span>
+                </div>
+
+                <div class="form-group tipo-usuario-group" id="tipoGroup">
+                    <span class="tipo-field-label" id="tipoFieldLabel">Tipo de conta</span>
+                    <div class="tipo-options" role="radiogroup" aria-labelledby="tipoFieldLabel">
+                        <label class="tipo-option">
+                            <input type="radio" name="tipo" value="aluno" required>
+                            <span>Aluno</span>
+                        </label>
+                        <label class="tipo-option">
+                            <input type="radio" name="tipo" value="empresa">
+                            <span>Empresa</span>
+                        </label>
+                    </div>
+                    <span class="error-message" id="tipoGroupError"></span>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="email" id="email" name="email" required autocomplete="email">
+                        <label for="email">Email</label>
+                    </div>
+                    <span class="error-message" id="emailError"></span>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="password" id="password" name="password" required autocomplete="current-password">
+                        <label for="password">Senha</label>
+                        <button type="button" class="password-toggle" id="passwordToggle" aria-label="Toggle password visibility">
+                            <span class="toggle-icon"></span>
+                        </button>
+                    </div>
+                    <span class="error-message" id="passwordError"></span>
+                </div>
+
+
+
+                <button type="submit" class="login-btn">
+                    <span class="btn-text">Cadastrar</span>
+                    <span class="btn-loader"></span>
+                </button>
+
+                <div class="register-link">
+                    <p>Já possui uma conta? <a href="/login">Clique aqui para fazer o login</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+        <script src="/js/form-utils.js"></script>
+        <script src="/js/scriptCadastro.js"></script>
+</body>
+</html>
