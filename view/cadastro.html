@@ -23,14 +23,6 @@
             
             <form class="login-form" id="loginForm" novalidate>
 
-                 <div class="form-group">
-                    <div class="input-wrapper">
-                        <input type="text" id="name" name="name" required autocomplete="name">
-                        <label for="name">Nome</label>
-                    </div>
-                     <span class="error-message" id="nameError"></span>
-                </div>
-
                 <div class="form-group tipo-usuario-group" id="tipoGroup">
                     <span class="tipo-field-label" id="tipoFieldLabel">Tipo de conta</span>
                     <div class="tipo-options" role="radiogroup" aria-labelledby="tipoFieldLabel">
@@ -46,6 +38,27 @@
                     <span class="error-message" id="tipoGroupError"></span>
                 </div>
 
+
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="text" id="documento" name="documento" required>
+                        <label for="documento" id="documentoLabel">RA</label>
+                    </div>
+                    <span class="error-message" id="documentoError"></span>
+                </div>
+
+
+                 <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="text" id="name" name="name" required autocomplete="name">
+                        <label for="name">Nome</label>
+                    </div>
+                     <span class="error-message" id="nameError"></span>
+                </div>
+
+                
+
+                
                 <div class="form-group">
                     <div class="input-wrapper">
                         <input type="email" id="email" name="email" required autocomplete="email">

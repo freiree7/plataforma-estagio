@@ -1,17 +1,28 @@
 import bcrypt from 'bcrypt'
 import UsuarioModel from "../model/usuarios_model.js";
-import UsuariosModel from '../model/usuarios_model.js';
 
 
 
 class usuarioController {
     static async create(req, res) {
         try {
-            const { nome, email, senha, tipo } = req.body;
+            const { nome, email, senha, tipo, ra, cnpj } = req.body;
             const tiposValidos = ['aluno', 'empresa'];
             if (!nome || !email || !senha || !tipo || !tiposValidos.includes(tipo)) {
                 return res.status(400).json({ erro: 'Erro no cliente' })
             }
+
+            const raLimpo = typeof ra === 'string' ? ra.trim().toUpperCase() : ''
+            const cnpjLimpo = typeof cnpj === 'string' ? cnpj.replace(/\D/g, '') : ''
+
+            if (tipo === 'aluno' && !raLimpo) {
+                return res.status(400).json({ erro: 'RA é obrigatório para aluno' })
+            }
+
+            if (tipo === 'empresa' && !cnpjLimpo) {
+                return res.status(400).json({ erro: 'CNPJ é obrigatório para empresa' })
+            }
+
             const usuarioSearchEmail = new UsuarioModel()
             const usuarioEmails = await usuarioSearchEmail.searchAllEmail(email)
             
@@ -20,6 +31,20 @@ class usuarioController {
             if (usuarioEmails.length > 0){
                 
                 return res.status(400).json({erro: 'Email já cadastrado'})
+            }
+
+            if (tipo === 'aluno') {
+                const raCadastrado = await usuarioSearchEmail.searchRA(raLimpo)
+                if (raCadastrado) {
+                    return res.status(400).json({ erro: 'RA já cadastrado' })
+                }
+            }
+
+            if (tipo === 'empresa') {
+                const cnpjCadastrado = await usuarioSearchEmail.searchCNPJ(cnpjLimpo)
+                if (cnpjCadastrado) {
+                    return res.status(400).json({ erro: 'CNPJ já cadastrado' })
+                }
             }
 
 
@@ -33,7 +58,14 @@ class usuarioController {
             const usuarioModel = new UsuarioModel();
             
             //funcao para criar o usuario
-            await usuarioModel.createUsuario({ nome, email, senha: senhaCrypt, tipo })
+            await usuarioModel.createUsuario({
+                nome,
+                email,
+                senha: senhaCrypt,
+                tipo,
+                ra: tipo === 'aluno' ? raLimpo : null,
+                cnpj: tipo === 'empresa' ? cnpjLimpo : null
+            })
 
             return res.status(201).json({ msg: 'Usuario criado com sucesso' })
 
@@ -59,29 +91,38 @@ class usuarioController {
 
     static async login(req, res) {
         try {
-            const { email, senha } = req.body
+            const body = req.body && typeof req.body === 'object' ? req.body : {}
+            const identificador = String(
+                body.identificador ?? body.email ?? body.cnpj ?? body.ra ?? ''
+            ).trim()
+            const senha = String(body.senha ?? '')
 
-            if (!email || !senha) {
+            if (!identificador || !senha.trim()) {
                 return res.status(400).json({ erro: 'Campos obrigatórios' })
             }
 
             const usuarioSearchEmail = new UsuarioModel()
-            const usuarioLogin = await usuarioSearchEmail.searchEmail(email)
+            const usuariosCandidatos = await usuarioSearchEmail.searchByIdentifier(identificador)
             
-            if (!usuarioLogin) {
-                return res.status(401).json({ erro: 'Email ou senha inválidos' })
+            if (!usuariosCandidatos || usuariosCandidatos.length === 0) {
+                return res.status(401).json({ erro: 'Usuário não encontrado para o identificador informado' })
             }
 
 
-            //valida a senha digitada com a senha salva criptografada no database
-            const senhaValida = await bcrypt.compare(
-                senha.trim(),
-                usuarioLogin.senha
-                //essa linha retorna a senha salva no db
-            )
+            let usuarioLogin = null
+            for (const candidato of usuariosCandidatos) {
+                const senhaValida = await bcrypt.compare(
+                    senha.trim(),
+                    candidato.senha
+                )
+                if (senhaValida) {
+                    usuarioLogin = candidato
+                    break
+                }
+            }
 
-            if (!senhaValida) {
-                return res.status(401).json({ erro: 'Email ou senha inválidos' })
+            if (!usuarioLogin) {
+                return res.status(401).json({ erro: 'Senha inválida para o identificador informado' })
             }
 
             // nunca retornar a senha
