@@ -9,6 +9,10 @@ const pool = mysql.createPool({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   port: process.env.DB_PORT,
+  connectionLimit: 10,
+  queueLimit: 0,
+  waitForConnections: true
+
 })
 
 async function testarConexao() {
@@ -18,7 +22,7 @@ async function testarConexao() {
     connection.release();
   } catch (error) {
     console.error("Erro ao conectar no MySQL:", error.message);
-    process.exit(1); 
+    process.exit(1); // encerra o servidor se não conseguir conectar
   }
 }
 

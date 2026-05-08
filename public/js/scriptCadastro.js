@@ -127,19 +127,19 @@ class LoginForm {
     validateDocumento() {
         const documento = this.documentoInput.value.trim();
         const tipo = this.getTipoSelecionado();
+        const numeros = documento.replace(/\D/g, '');
 
         if (!documento) {
             this.showError('documento', 'Preencha o campo RA/CNPJ');
             return false;
         }
 
-        if (tipo === 'aluno' && documento.length < 4) {
-            this.showError('documento', 'Informe um RA válido');
+        if (tipo === 'aluno' && numeros.length !== 10) {
+            this.showError('documento', 'Informe um RA válido com 10 dígitos');
             return false;
         }
 
         if (tipo === 'empresa') {
-            const numeros = documento.replace(/\D/g, '');
             if (numeros.length !== 14) {
                 this.showError('documento', 'Informe um CNPJ válido com 14 dígitos');
                 return false;
@@ -209,16 +209,19 @@ form.addEventListener('submit', async (e) => {
       ra: tipo === 'aluno' ? documento : null,
       cnpj: tipo === 'empresa' ? documento : null
     }
-
-    const resposta = await fetch('/cadastro', {
+    console.log(payload)
+    const resposta = await fetch('/api/usuarios/cadastro', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
+      
     })
-
-    const dados = await resposta.json()
+    const contentType = resposta.headers.get('content-type') || ''
+    const dados = contentType.includes('application/json')
+      ? await resposta.json()
+      : { erro: 'Resposta inválida do servidor' }
 
     if (!resposta.ok) {
       const err = dados?.erro
@@ -235,6 +238,10 @@ form.addEventListener('submit', async (e) => {
                   ? 'RA é obrigatório para contas de aluno.'
                   : err === 'CNPJ é obrigatório para empresa'
                     ? 'CNPJ é obrigatório para contas de empresa.'
+                    : err === 'RA inválido — deve conter 10 dígitos'
+                      ? 'RA inválido. Use exatamente 10 dígitos.'
+                      : err === 'CNPJ inválido — deve conter 14 dígitos'
+                        ? 'CNPJ inválido. Use exatamente 14 dígitos.'
             : 'Não foi possível concluir o cadastro.'
       Swal.fire({
         icon: 'error',

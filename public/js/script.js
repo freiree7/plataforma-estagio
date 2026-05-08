@@ -140,7 +140,7 @@ form.addEventListener("submit", async (e) => {
   const senha = document.getElementById("password").value
 
   try {
-    const resposta = await fetch('/login', {
+    const resposta = await fetch('/api/usuarios/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ identificador, email: identificador, senha })
@@ -161,12 +161,19 @@ form.addEventListener("submit", async (e) => {
     }
 
     Swal.fire({
-      icon: 'success',
-      title: 'Login realizado!',
-      text: 'Seu usuário foi logado com sucesso!',
-      confirmButtonColor: '#3b82f6'
+        icon: 'success',
+        title: 'Login realizado!',
+        text: 'Seu usuário foi logado com sucesso!',
+        confirmButtonColor: '#3b82f6'
     }).then(() => {
-        window.location.href = '/home'
+        
+        // Redireciona para a página correta baseado no tipo
+        if (dados.tipo === 'aluno') {
+            window.location.href = '/home/aluno'
+        
+        } else if(dados.tipo === 'empresa') {
+            window.location.href = '/home/empresa'
+        }
     })
 
 
