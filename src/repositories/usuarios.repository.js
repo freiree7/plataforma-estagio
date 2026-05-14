@@ -65,12 +65,16 @@ class UsuariosRepository {
                     'INSERT INTO alunos (usuario_id, ra) VALUES (?, ?)',
                     [usuarioId, ra]
                 )
+                await connection.execute(
+                    'INSERT INTO perfis (usuario_id) VALUES (?)',
+                    [usuarioId]
+                )
             }
 
             if (tipo === 'empresa') {
                 await connection.execute(
-                    'INSERT INTO empresas (usuario_id, cnpj) VALUES (?, ?)',
-                    [usuarioId, cnpj]
+                    'INSERT INTO empresas (usuario_id, cnpj, nome_fantasia) VALUES (?, ?, ?)',
+                    [usuarioId, cnpj, nome]
                 )
             }
 

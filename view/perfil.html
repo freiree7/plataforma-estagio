@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil | Estagia Ai</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/perfil.css">
+</head>
+<body>
+    <header class="top-nav-wrapper">
+        <nav class="top-nav">
+            <a href="/home/aluno" class="brand" aria-label="Ir para pagina inicial">
+                <span class="brand-dot"></span>
+                <span class="brand-text">Estagia Ai</span>
+            </a>
+
+            <ul class="nav-list" aria-label="Navegacao principal">
+                <li><a href="/home/aluno" class="nav-btn">Home</a></li>
+                <li><a href="/empresas" class="nav-btn">Empresas</a></li>
+                <li><a href="/perfil/aluno" class="nav-btn active">Perfil</a></li>
+            </ul>
+
+            <div class="actions">
+                <div class="profile-dropdown">
+                    <button
+                        id="profileMenuButton"
+                        class="avatar-btn"
+                        type="button"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        aria-label="Abrir menu do perfil"
+                    >
+                        <span class="avatar-circle">PF</span>
+                        <span class="avatar-name">Meu perfil</span>
+                    </button>
+
+                    <div id="profileMenu" class="dropdown-menu" role="menu" aria-hidden="true">
+                        <a href="/perfil/aluno" class="dropdown-item" role="menuitem">Acessar perfil</a>
+                        <a href="/logout" class="dropdown-item danger" role="menuitem">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="perfil-content">
+        <section class="perfil-card">
+            <p class="perfil-kicker">Dados da conta</p>
+            <h1>Perfil do usuario</h1>
+            <p class="perfil-description">
+                Visualize e edite suas informacoes. A foto exibe as iniciais do seu nome.
+            </p>
+
+            <div class="perfil-layout">
+                <aside class="perfil-photo-col" aria-label="Foto do perfil">
+                    <div class="perfil-avatar" id="perfilAvatar">
+                        <span class="perfil-avatar-text" id="perfilAvatarIniciais" aria-hidden="true">PF</span>
+                    </div>
+                    <p class="perfil-photo-hint">Iniciais geradas a partir do nome</p>
+                </aside>
+
+                <div class="perfil-data-col">
+                    <div class="perfil-grid">
+                        <article class="field-card field-card-full">
+                            <span class="field-label">RA</span>
+                            <span class="field-value view-value" id="perfilRa">00000000</span>
+                            <input class="field-input" id="perfilRaInput" type="text" value="00000000" aria-label="Editar RA">
+                        </article>
+
+                        <article class="field-card field-card-full">
+                            <span class="field-label">Nome</span>
+                            <span class="field-value view-value" id="perfilNome">Nome do usuario</span>
+                            <input class="field-input" id="perfilNomeInput" type="text" value="Nome do usuario" aria-label="Editar nome">
+                        </article>
+
+                        <article class="field-card field-card-full">
+                            <span class="field-label">Email</span>
+                            <span class="field-value view-value" id="perfilEmail">usuario@email.com</span>
+                            <input class="field-input" id="perfilEmailInput" type="email" value="usuario@email.com" aria-label="Editar email">
+                        </article>
+
+                        <article class="field-card field-card-full">
+                            <span class="field-label">Habilidades</span>
+                            <span class="field-value view-value perfil-multiline" id="perfilHabilidades">Ex.: JavaScript, trabalho em equipe</span>
+                            <textarea class="field-input field-textarea" id="perfilHabilidadesInput" rows="3" aria-label="Editar habilidades">Ex.: JavaScript, trabalho em equipe</textarea>
+                        </article>
+
+                        <article class="field-card field-card-full">
+                            <span class="field-label">GitHub</span>
+                            <a
+                                class="field-value view-value perfil-social-link is-placeholder"
+                                id="perfilGithubView"
+                                href="#"
+                                data-placeholder="Informe o link do GitHub"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >Informe o link do GitHub</a>
+                            <input class="field-input" id="perfilGithubInput" type="url" value="" placeholder="https://github.com/seuusuario" aria-label="Editar link do GitHub">
+                        </article>
+
+                        <article class="field-card field-card-full">
+                            <span class="field-label">LinkedIn</span>
+                            <a
+                                class="field-value view-value perfil-social-link is-placeholder"
+                                id="perfilLinkedinView"
+                                href="#"
+                                data-placeholder="Informe o link do LinkedIn"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >Informe o link do LinkedIn</a>
+                            <input class="field-input" id="perfilLinkedinInput" type="url" value="" placeholder="https://www.linkedin.com/in/seuperfil" aria-label="Editar link do LinkedIn">
+                        </article>
+                    </div>
+                </div>
+            </div>
+
+            <div class="perfil-actions">
+                <button type="button" class="edit-btn" id="editarPerfilBtn">Editar dados</button>
+                <button type="button" class="edit-btn save-btn" id="salvarPerfilBtn">Salvar</button>
+                <button type="button" class="edit-btn cancel-btn" id="cancelarEdicaoBtn">Cancelar</button>
+            </div>
+            <p class="edit-feedback" id="editFeedback" aria-live="polite"></p>
+        </section>
+    </main>
+
+    <script src="/js/scriptHome.js"></script>
+    <script src="/js/scriptPerfil.js"></script>
+</body>
+</html>

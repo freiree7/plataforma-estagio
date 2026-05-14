@@ -167,7 +167,7 @@ form.addEventListener("submit", async (e) => {
         confirmButtonColor: '#3b82f6'
     }).then(() => {
         
-        // Redireciona para a página correta baseado no tipo
+        // redireciona para a página correta baseado no tipo
         if (dados.tipo === 'aluno') {
             window.location.href = '/home/aluno'
         

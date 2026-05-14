@@ -37,6 +37,8 @@ class UsuariosController {
             return res.status(status).json({ erro: mensagem })
         }
     }
+
+
 }
 
 export default new UsuariosController()
