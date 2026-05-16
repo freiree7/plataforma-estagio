@@ -1,14 +1,20 @@
 import { Router } from 'express'
 import usuarioController from '../../controllers/usuarios.controller.js'
+import PerfilController from '../../controllers/perfil.controller.js'
+import HabilidadesController from '../../controllers/habilidades.controller.js'
+import auth from '../../middlewares/auth.js'
 
 const router = Router()
 
-router.post('/cadastro',usuarioController.create)
+router.post('/cadastro', usuarioController.create)
+router.post('/login', usuarioController.login)
 
-router.post('/login' , usuarioController.login )
+router.get('/perfil', auth('aluno'), PerfilController.getPerfil)
+router.patch('/perfil', auth('aluno'), PerfilController.updatePerfil)
 
-// Protegidas — autenticação obrigatória (implementar depois)
-//router.get('/perfil', auth('aluno'),   usuarioController.perfil)
-//router.get('/dados',  auth('empresa'), usuarioController.dados)
+export const perfilRouter = Router()
+perfilRouter.get('/perfil/habilidades', auth('aluno'), PerfilController.getHabilidades)
+perfilRouter.patch('/perfil/habilidades', auth('aluno'), PerfilController.updateHabilidades)
+perfilRouter.get('/habilidades', auth('aluno'), HabilidadesController.listar)
 
 export default router

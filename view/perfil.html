@@ -60,10 +60,21 @@
                         <span class="perfil-avatar-text" id="perfilAvatarIniciais" aria-hidden="true">PF</span>
                     </div>
                     <p class="perfil-photo-hint">Iniciais geradas a partir do nome</p>
+
+                    <!-- Bio abaixo do avatar -->
+                    <p class="perfil-bio-view" id="perfilBio"></p>
+                    <textarea
+                        class="perfil-bio-input"
+                        id="perfilBioInput"
+                        rows="3"
+                        placeholder="Fale um pouco sobre você..."
+                        aria-label="Editar bio"
+                    ></textarea>
                 </aside>
 
                 <div class="perfil-data-col">
                     <div class="perfil-grid">
+
                         <article class="field-card field-card-full">
                             <span class="field-label">RA</span>
                             <span class="field-value view-value" id="perfilRa">00000000</span>
@@ -83,9 +94,17 @@
                         </article>
 
                         <article class="field-card field-card-full">
+                            <span class="field-label">Telefone</span>
+                            <span class="field-value view-value" id="perfilTelefone">—</span>
+                            <input class="field-input" id="perfilTelefoneInput" type="tel" value="" placeholder="(00) 00000-0000" aria-label="Editar telefone">
+                        </article>
+
+                        <article class="field-card field-card-full">
                             <span class="field-label">Habilidades</span>
-                            <span class="field-value view-value perfil-multiline" id="perfilHabilidades">Ex.: JavaScript, trabalho em equipe</span>
-                            <textarea class="field-input field-textarea" id="perfilHabilidadesInput" rows="3" aria-label="Editar habilidades">Ex.: JavaScript, trabalho em equipe</textarea>
+                            <div class="field-value view-value skills-view" id="perfilHabilidadesView" aria-live="polite">
+                                <span class="skills-empty">Nenhuma habilidade selecionada</span>
+                            </div>
+                            <div class="skills-edit" id="perfilHabilidadesEdit" aria-label="Selecionar habilidades"></div>
                         </article>
 
                         <article class="field-card field-card-full">
@@ -113,6 +132,7 @@
                             >Informe o link do LinkedIn</a>
                             <input class="field-input" id="perfilLinkedinInput" type="url" value="" placeholder="https://www.linkedin.com/in/seuperfil" aria-label="Editar link do LinkedIn">
                         </article>
+
                     </div>
                 </div>
             </div>

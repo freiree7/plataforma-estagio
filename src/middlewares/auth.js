@@ -8,10 +8,10 @@ const auth = (tipoPermitido) => {
             const tokenCookie = req.cookies?.token
             const token = tokenHeader || tokenCookie
 
-            // REMOVER OS CONSOLE.LOG DEPOIS
-            console.log('Cookie recebido:', req.cookies)
-            console.log('Token encontrado:', token ? 'sim' : 'não')
-            console.log('Tipo permitido:', tipoPermitido)
+           
+           // console.log('Cookie recebido:', req.cookies)
+            //console.log('Token encontrado:', token ? 'sim' : 'não')
+            //console.log('Tipo permitido:', tipoPermitido)
 
             if (!token) {
                 console.log('Bloqueado: sem token')
@@ -20,7 +20,7 @@ const auth = (tipoPermitido) => {
             }
 
             const decoded = jwt.verify(token, process.env.JWT_SECRET)
-            console.log('Decoded:', decoded)
+            //console.log('Decoded:', decoded)
 
             if (tipoPermitido && decoded.tipo !== tipoPermitido) {
                 console.log('Bloqueado: tipo incorreto', decoded.tipo, '!==', tipoPermitido)

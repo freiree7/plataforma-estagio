@@ -252,6 +252,54 @@ body {
     max-width: 16ch;
 }
 
+/* ========================
+   BIO ABAIXO DO AVATAR
+   ======================== */
+.perfil-bio-view {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    text-align: center;
+    max-width: 18ch;
+    word-break: break-word;
+    min-height: 0;
+}
+
+.perfil-bio-view:empty {
+    display: none;
+}
+
+.perfil-bio-input {
+    display: none;
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid var(--border-soft);
+    background: rgba(15, 23, 42, 0.85);
+    color: var(--text-main);
+    padding: 8px 12px;
+    font-size: 0.88rem;
+    font-family: inherit;
+    line-height: 1.45;
+    resize: vertical;
+    min-height: 72px;
+}
+
+.perfil-bio-input:focus {
+    outline: 0;
+    border-color: rgba(34, 211, 238, 0.9);
+    box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.2);
+}
+
+.perfil-card.editing .perfil-bio-view {
+    display: none;
+}
+
+.perfil-card.editing .perfil-bio-input {
+    display: block;
+}
+
+/* ======================== */
+
 .perfil-data-col {
     min-width: 0;
 }
@@ -301,14 +349,6 @@ body {
     pointer-events: none;
     cursor: default;
     text-decoration: none;
-}
-
-.field-textarea {
-    height: auto;
-    min-height: 88px;
-    padding: 10px 12px;
-    resize: vertical;
-    line-height: 1.45;
 }
 
 .field-label {
@@ -418,6 +458,85 @@ body {
     font-size: 0.88rem;
 }
 
+/* ========================
+   HABILIDADES
+   ======================== */
+.skills-view {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.skills-edit {
+    display: none;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.skills-edit-group {
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+.skills-edit-group:last-child {
+    margin-bottom: 0;
+}
+
+.skills-edit-category {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.skills-edit-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.skills-empty {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.skill-chip {
+    padding: 4px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(34, 211, 238, 0.4);
+    background: rgba(14, 165, 233, 0.12);
+    color: #e0f2fe;
+    font-size: 0.82rem;
+    font-weight: 500;
+}
+
+.skill-chip.selectable {
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+}
+
+.skill-chip.selectable:hover {
+    border-color: rgba(34, 211, 238, 0.8);
+}
+
+.skill-chip.selectable.selected {
+    background: rgba(14, 165, 233, 0.35);
+    border-color: rgba(34, 211, 238, 0.9);
+    color: #fff;
+}
+
+.perfil-card.editing .skills-edit {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ========================
+   ANIMAÇÕES
+   ======================== */
 @keyframes fadeCardUp {
     from {
         opacity: 0;
@@ -429,6 +548,9 @@ body {
     }
 }
 
+/* ========================
+   RESPONSIVO
+   ======================== */
 @media (max-width: 980px) {
     .top-nav {
         flex-wrap: wrap;

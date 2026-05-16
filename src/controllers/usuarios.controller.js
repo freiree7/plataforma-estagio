@@ -33,7 +33,7 @@ class UsuariosController {
 
         } catch (error) {
             const status = error.status || 500
-            const mensagem = error.mensagem || 'Erro no servidor'
+            const mensagem = error.mensagem 
             return res.status(status).json({ erro: mensagem })
         }
     }

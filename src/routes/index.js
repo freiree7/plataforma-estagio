@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import apiUsuarios from './api/usuarios.js'
+import apiUsuarios, { perfilRouter } from './api/usuarios.js'
 import viewsHome from './views/home.js'
 import viewsUsuarios from './views/usuarios.js'
 import viewsPerfil from './views/perfil_usuario.js'
@@ -9,6 +9,7 @@ const router = Router()
 
 //API — retornam JSON
 router.use('/api/usuarios', apiUsuarios)
+router.use('/api', perfilRouter)
 
 // views — retornam HTML
 router.use('/', viewsHome)

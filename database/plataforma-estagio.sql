@@ -61,9 +61,11 @@ CREATE TABLE empresas (
 CREATE TABLE perfis (
   id INT AUTO_INCREMENT PRIMARY KEY,
   usuario_id INT UNIQUE,
+  foto_url VARCHAR(500),
   bio TEXT,
   linkedin VARCHAR(255),
   github VARCHAR(255),
+  telefone VARCHAR(20),
 
   CONSTRAINT fk_perfil_usuario
     FOREIGN KEY (usuario_id)
@@ -76,7 +78,8 @@ CREATE TABLE perfis (
 -- ========================
 CREATE TABLE habilidades (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  nome VARCHAR(100) NOT NULL UNIQUE
+  nome VARCHAR(100) NOT NULL UNIQUE,
+  categoria VARCHAR(80)
 );
 
 -- ========================
@@ -159,3 +162,20 @@ CREATE TABLE candidaturas (
     REFERENCES vagas(id)
     ON DELETE CASCADE
 );
+
+INSERT INTO habilidades (nome, categoria) VALUES
+('JavaScript', 'Linguagens'),
+('Python', 'Linguagens'),
+('Java', 'Linguagens'),
+('TypeScript', 'Linguagens'),
+('SQL', 'Linguagens'),
+('React', 'Frameworks'),
+('Node.js', 'Frameworks'),
+('Express', 'Frameworks'),
+('Vue.js', 'Frameworks'),
+('Git', 'Ferramentas'),
+('Docker', 'Ferramentas'),
+('Figma', 'Ferramentas'),
+('Trabalho em equipe', 'Soft Skills'),
+('Comunicação', 'Soft Skills'),
+('Proatividade', 'Soft Skills');

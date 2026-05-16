@@ -139,6 +139,7 @@ form.addEventListener("submit", async (e) => {
   const identificador = document.getElementById("identificador").value.trim()
   const senha = document.getElementById("password").value
 
+  
   try {
     const resposta = await fetch('/api/usuarios/login', {
       method: 'POST',
