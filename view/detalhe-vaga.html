@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes da Vaga | Estagia Ai</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/home_alunos.css">
+    <link rel="stylesheet" href="/css/detalhe-vaga.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <header class="top-nav-wrapper">
+        <nav class="top-nav">
+            <a href="/home/aluno" class="brand" aria-label="Ir para pagina inicial">
+                <span class="brand-dot"></span>
+                <span class="brand-text">Estagia Ai</span>
+            </a>
+
+            <ul class="nav-list" aria-label="Navegacao principal">
+                <li><a href="/home/aluno" class="nav-btn">Home</a></li>
+                <li><a href="/empresas" class="nav-btn">Empresas</a></li>
+                <li><a href="/perfil/aluno" class="nav-btn">Perfil</a></li>
+            </ul>
+
+            <div class="actions">
+                <form class="search-form" role="search" aria-label="Buscar na plataforma">
+                    <label for="global-search" class="sr-only">Buscar</label>
+                    <input
+                        id="global-search"
+                        class="search-input"
+                        type="search"
+                        placeholder="Pesquisar"
+                        autocomplete="off"
+                    >
+                </form>
+
+                <div class="profile-dropdown">
+                    <button
+                        id="profileMenuButton"
+                        class="avatar-btn"
+                        type="button"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        aria-label="Abrir menu do perfil"
+                    >
+                        <span class="avatar-circle">FF</span>
+                        <span class="avatar-name"></span>
+                    </button>
+
+                    <div id="profileMenu" class="dropdown-menu" role="menu" aria-hidden="true">
+                        <a href="/perfil/aluno" class="dropdown-item" role="menuitem">Acessar perfil</a>
+                        <a href="/logout" class="dropdown-item danger" role="menuitem">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="detalhe-content">
+        <div id="vagaDetalhe" class="detalhe-card" aria-live="polite">
+            <p class="detalhe-loading">Carregando vaga...</p>
+        </div>
+    </main>
+
+    <script src="/js/date-utils.js"></script>
+    <script src="/js/scriptHome.js"></script>
+    <script src="/js/scriptDetalheVaga.js"></script>
+</body>
+</html>

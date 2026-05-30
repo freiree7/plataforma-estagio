@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Vaga | Estagia Ai</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/perfil.css">
+    <link rel="stylesheet" href="/css/criar-vaga.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <header class="top-nav-wrapper">
+        <nav class="top-nav">
+            <a href="/home/empresa" class="brand" aria-label="Ir para pagina inicial">
+                <span class="brand-dot"></span>
+                <span class="brand-text">Estagia Ai</span>
+            </a>
+
+            <ul class="nav-list" aria-label="Navegacao principal">
+                <li><a href="/home/empresa" class="nav-btn">Home</a></li>
+            </ul>
+
+            <div class="actions">
+                <div class="profile-dropdown">
+                    <button
+                        id="profileMenuButton"
+                        class="avatar-btn"
+                        type="button"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        aria-label="Abrir menu do perfil"
+                    >
+                        <span class="avatar-circle">EM</span>
+                        <span class="avatar-name">Empresa</span>
+                    </button>
+
+                    <div id="profileMenu" class="dropdown-menu" role="menu" aria-hidden="true">
+                        <a href="/logout" class="dropdown-item danger" role="menuitem">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="perfil-content">
+        <section class="perfil-card">
+            <p class="perfil-kicker">Atualizar oportunidade</p>
+            <h1>Editar vaga</h1>
+            <p class="perfil-description">
+                Atualize os dados da vaga de estagio. Campos com asterisco sao obrigatorios.
+            </p>
+
+            <form id="formEditarVaga" class="vaga-form" novalidate>
+                <div class="vaga-form-grid">
+                    <article class="field-card field-card-full">
+                        <label class="field-label" for="titulo">Titulo *</label>
+                        <input class="field-input vaga-input-visible" id="titulo" name="titulo" type="text" required maxlength="150" placeholder="Ex: Desenvolvedor Frontend">
+                    </article>
+
+                    <article class="field-card field-card-full">
+                        <label class="field-label" for="descricao">Descricao *</label>
+                        <textarea class="vaga-textarea" id="descricao" name="descricao" rows="5" required placeholder="Descreva as atividades e requisitos da vaga"></textarea>
+                    </article>
+
+                    <article class="field-card field-card-full">
+                        <label class="field-label" for="diferenciais">Diferenciais</label>
+                        <textarea class="vaga-textarea" id="diferenciais" name="diferenciais" rows="3" placeholder="Beneficios, cultura, o que torna a vaga especial"></textarea>
+                    </article>
+
+                    <article class="field-card">
+                        <label class="field-label" for="tipo">Tipo</label>
+                        <select class="vaga-select" id="tipo" name="tipo">
+                            <option value="">Selecione</option>
+                            <option value="remoto">Remoto</option>
+                            <option value="presencial">Presencial</option>
+                            <option value="hibrido">Hibrido</option>
+                        </select>
+                    </article>
+
+                    <article class="field-card">
+                        <label class="field-label" for="localizacao">Localizacao</label>
+                        <input class="field-input vaga-input-visible" id="localizacao" name="localizacao" type="text" maxlength="150" placeholder="Cidade / estado">
+                    </article>
+
+                    <article class="field-card">
+                        <label class="field-label" for="bolsa">Bolsa</label>
+                        <input class="field-input vaga-input-visible" id="bolsa" name="bolsa" type="text" maxlength="50" placeholder="R$ 1.200,00 ou A combinar">
+                    </article>
+
+                    <article class="field-card">
+                        <label class="field-label" for="prazo_inscricao">Prazo de inscricao</label>
+                        <input class="field-input vaga-input-visible" id="prazo_inscricao" name="prazo_inscricao" type="date">
+                    </article>
+
+                    <article class="field-card field-card-full">
+                        <label class="field-label" for="status">Status da vaga</label>
+                        <select class="vaga-select" id="status" name="status">
+                            <option value="ativa">Ativa</option>
+                            <option value="encerrada">Encerrada</option>
+                            <option value="rascunho">Rascunho</option>
+                        </select>
+                    </article>
+
+                    <article class="field-card field-card-full">
+                        <span class="field-label">Habilidades obrigatorias</span>
+                        <div id="habilidadesObrigatorias" class="skills-edit-chips" aria-label="Habilidades obrigatorias"></div>
+                    </article>
+
+                    <article class="field-card field-card-full">
+                        <span class="field-label">Habilidades diferenciais</span>
+                        <div id="habilidadesDiferenciais" class="skills-edit-chips" aria-label="Habilidades diferenciais"></div>
+                    </article>
+                </div>
+
+                <div class="perfil-actions">
+                    <a href="/home/empresa" class="btn-secondary">Cancelar</a>
+                    <button type="submit" class="btn-primary" id="btnSalvarVaga">Salvar alterações</button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <script src="/js/scriptHome.js"></script>
+    <script src="/js/scriptEditarVaga.js"></script>
+</body>
+</html>

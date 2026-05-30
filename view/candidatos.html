@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidatos | Estagia Ai</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/home_empresas.css">
+    <link rel="stylesheet" href="/css/candidatos.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <header class="top-nav-wrapper">
+        <nav class="top-nav">
+            <a href="/home/empresa" class="brand" aria-label="Ir para pagina inicial">
+                <span class="brand-dot"></span>
+                <span class="brand-text">Estagia Ai</span>
+            </a>
+
+            <ul class="nav-list" aria-label="Navegacao principal">
+                <li><a href="/home/empresa" class="nav-btn">Home</a></li>
+            </ul>
+
+            <div class="actions">
+                <div class="profile-dropdown">
+                    <button
+                        id="profileMenuButton"
+                        class="avatar-btn"
+                        type="button"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        aria-label="Abrir menu do perfil"
+                    >
+                        <span class="avatar-circle">EM</span>
+                        <span class="avatar-name">Empresa</span>
+                    </button>
+
+                    <div id="profileMenu" class="dropdown-menu" role="menu" aria-hidden="true">
+                        <a href="/logout" class="dropdown-item danger" role="menuitem">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="home-content">
+        <section class="hero-card">
+            <p class="hero-kicker">Gestao de candidatos</p>
+            <h1 id="tituloVaga">Candidatos da vaga</h1>
+            <p id="subtituloVaga" class="hero-subtitle">Carregando...</p>
+            <a href="/home/empresa" class="btn-secondary link-voltar">Voltar para minhas vagas</a>
+        </section>
+
+        <section class="vagas-section" aria-label="Lista de candidatos">
+            <div id="listaCandidatos"></div>
+        </section>
+    </main>
+
+    <script src="/js/scriptHome.js"></script>
+    <script src="/js/scriptCandidatos.js"></script>
+</body>
+</html>

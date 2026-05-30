@@ -5,6 +5,8 @@ class LoginForm {
         this.nameInput = document.getElementById('name');
         this.emailInput = document.getElementById('email');
         this.passwordInput = document.getElementById('password');
+        this.documentoInput = document.getElementById('documento');
+        this.documentoLabel = document.getElementById('documentoLabel');
         this.passwordToggle = document.getElementById('passwordToggle');
         this.submitButton = this.form.querySelector('.login-btn');
 
@@ -14,18 +16,34 @@ class LoginForm {
     init() {
         this.bindEvents();
         this.setupPasswordToggle();
+        this.updateDocumentoLabel();
     }
     
     bindEvents() {
         this.nameInput.addEventListener('blur',() => this.validateName());
         this.emailInput.addEventListener('blur', () => this.validateEmail());
         this.passwordInput.addEventListener('blur', () => this.validatePassword());
+        this.documentoInput.addEventListener('blur', () => this.validateDocumento());
         this.emailInput.addEventListener('input', () => this.clearError('email'));
         this.passwordInput.addEventListener('input', () => this.clearError('password'));
+        this.documentoInput.addEventListener('input', () => this.clearError('documento'));
         this.nameInput.addEventListener('input' , () =>this.clearError('name') )
         document.querySelectorAll('input[name="tipo"]').forEach((el) => {
-            el.addEventListener('change', () => this.clearError('tipoGroup'));
+            el.addEventListener('change', () => {
+                this.clearError('tipoGroup');
+                this.updateDocumentoLabel();
+                this.validateDocumento();
+            });
         });
+    }
+
+    getTipoSelecionado() {
+        return document.querySelector('input[name="tipo"]:checked')?.value;
+    }
+
+    updateDocumentoLabel() {
+        const tipo = this.getTipoSelecionado();
+        this.documentoLabel.textContent = tipo === 'empresa' ? 'CNPJ' : 'RA';
     }
     
     setupPasswordToggle() {
@@ -105,6 +123,32 @@ class LoginForm {
         this.clearError('tipoGroup');
         return true;
     }
+
+    validateDocumento() {
+        const documento = this.documentoInput.value.trim();
+        const tipo = this.getTipoSelecionado();
+        const numeros = documento.replace(/\D/g, '');
+
+        if (!documento) {
+            this.showError('documento', 'Preencha o campo RA/CNPJ');
+            return false;
+        }
+
+        if (tipo === 'aluno' && numeros.length !== 10) {
+            this.showError('documento', 'Informe um RA válido com 10 dígitos');
+            return false;
+        }
+
+        if (tipo === 'empresa') {
+            if (numeros.length !== 14) {
+                this.showError('documento', 'Informe um CNPJ válido com 14 dígitos');
+                return false;
+            }
+        }
+
+        this.clearError('documento');
+        return true;
+    }
     
     showError(field, message) {
         const el = document.getElementById(field);
@@ -143,27 +187,41 @@ form.addEventListener('submit', async (e) => {
   const nome = document.getElementById('name').value.trim()
   const email = document.getElementById('email').value.trim()
   const senha = document.getElementById('password').value
+  const documento = document.getElementById('documento').value.trim()
   const tipo = document.querySelector('input[name="tipo"]:checked')?.value
 
   const nameOk = loginFormInstance.validateName()
   const emailOk = loginFormInstance.validateEmail()
   const passOk = loginFormInstance.validatePassword()
   const tipoOk = loginFormInstance.validateTipo()
+  const documentoOk = loginFormInstance.validateDocumento()
 
-  if (!tipoOk || !nameOk || !emailOk || !passOk) {
+  if (!tipoOk || !nameOk || !emailOk || !passOk || !documentoOk) {
     return
   }
 
   try {
-    const resposta = await fetch('/cadastro', {
+    const payload = {
+      nome,
+      email,
+      senha,
+      tipo,
+      ra: tipo === 'aluno' ? documento : null,
+      cnpj: tipo === 'empresa' ? documento : null
+    }
+    console.log(payload)
+    const resposta = await fetch('/api/usuarios/cadastro', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ nome, email, senha, tipo })
+      body: JSON.stringify(payload),
+      
     })
-
-    const dados = await resposta.json()
+    const contentType = resposta.headers.get('content-type') || ''
+    const dados = contentType.includes('application/json')
+      ? await resposta.json()
+      : { erro: 'Resposta inválida do servidor' }
 
     if (!resposta.ok) {
       const err = dados?.erro
@@ -172,6 +230,18 @@ form.addEventListener('submit', async (e) => {
           ? 'Verifique os dados informados e o tipo de conta.'
           : err === 'Email já cadastrado'
             ? 'Email já cadastrado.'
+            : err === 'RA já cadastrado'
+              ? 'RA já cadastrado.'
+              : err === 'CNPJ já cadastrado'
+                ? 'CNPJ já cadastrado.'
+                : err === 'RA é obrigatório para aluno'
+                  ? 'RA é obrigatório para contas de aluno.'
+                  : err === 'CNPJ é obrigatório para empresa'
+                    ? 'CNPJ é obrigatório para contas de empresa.'
+                    : err === 'RA inválido — deve conter 10 dígitos'
+                      ? 'RA inválido. Use exatamente 10 dígitos.'
+                      : err === 'CNPJ inválido — deve conter 14 dígitos'
+                        ? 'CNPJ inválido. Use exatamente 14 dígitos.'
             : 'Não foi possível concluir o cadastro.'
       Swal.fire({
         icon: 'error',
@@ -180,6 +250,7 @@ form.addEventListener('submit', async (e) => {
         confirmButtonColor: '#ef4444'
       })
       form.reset()
+      loginFormInstance.updateDocumentoLabel()
       return
       
     }else {
@@ -193,6 +264,7 @@ form.addEventListener('submit', async (e) => {
         window.location.href = '/login'
         })
            form.reset()
+           loginFormInstance.updateDocumentoLabel()
     }
     
 

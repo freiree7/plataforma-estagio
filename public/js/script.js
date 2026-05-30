@@ -3,7 +3,7 @@
 class LoginForm {
     constructor() {
         this.form = document.getElementById('loginForm');
-        this.emailInput = document.getElementById('email');
+        this.identificadorInput = document.getElementById('identificador');
         this.passwordInput = document.getElementById('password');
         this.passwordToggle = document.getElementById('passwordToggle');
         this.submitButton = this.form.querySelector('.login-btn');
@@ -19,9 +19,9 @@ class LoginForm {
     
     bindEvents() {
         
-        this.emailInput.addEventListener('blur', () => this.validateEmail());
+        this.identificadorInput.addEventListener('blur', () => this.validateIdentificador());
         this.passwordInput.addEventListener('blur', () => this.validatePassword());
-        this.emailInput.addEventListener('input', () => this.clearError('email'));
+        this.identificadorInput.addEventListener('input', () => this.clearError('identificador'));
         this.passwordInput.addEventListener('input', () => this.clearError('password'));
     }
     
@@ -35,21 +35,15 @@ class LoginForm {
         });
     }
     
-    validateEmail() {
-        const email = this.emailInput.value.trim();
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        
-        if (!email) {
-            this.showError('email', 'O email é obrigatório');
+    validateIdentificador() {
+        const identificador = this.identificadorInput.value.trim();
+
+        if (!identificador) {
+            this.showError('identificador', 'Informe email, CNPJ ou RA');
             return false;
         }
         
-        if (!emailRegex.test(email)) {
-            this.showError('email', 'Por favor insira um email válido');
-            return false;
-        }
-        
-        this.clearError('email');
+        this.clearError('identificador');
         return true;
     }
     
@@ -93,10 +87,10 @@ class LoginForm {
     async handleSubmit(e) {
         e.preventDefault();
         
-        const isEmailValid = this.validateEmail();
+        const isIdentificadorValid = this.validateIdentificador();
         const isPasswordValid = this.validatePassword();
         
-        if (!isEmailValid || !isPasswordValid) {
+        if (!isIdentificadorValid || !isPasswordValid) {
             return;
         }
         
@@ -142,21 +136,24 @@ const form = document.getElementById("loginForm")
 form.addEventListener("submit", async (e) => {
   e.preventDefault()
 
-  const email = document.getElementById("email").value
+  const identificador = document.getElementById("identificador").value.trim()
   const senha = document.getElementById("password").value
 
+  
   try {
-    const resposta = await fetch('/login', {
+    const resposta = await fetch('/api/usuarios/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, senha })
+      body: JSON.stringify({ identificador, email: identificador, senha })
     })
+
+    const dados = await resposta.json().catch(() => ({}))
 
     if (!resposta.ok) {
       Swal.fire({
         icon: 'error',
         title: 'Erro no login',
-        text:  'Email ou senha inválidos',
+        text:  dados.erro || 'Falha ao autenticar',
         confirmButtonColor: '#ef4444'
       })
       form.reset()
@@ -165,12 +162,19 @@ form.addEventListener("submit", async (e) => {
     }
 
     Swal.fire({
-      icon: 'success',
-      title: 'Login realizado!',
-      text: 'Seu usuário foi logado com sucesso!',
-      confirmButtonColor: '#3b82f6'
+        icon: 'success',
+        title: 'Login realizado!',
+        text: 'Seu usuário foi logado com sucesso!',
+        confirmButtonColor: '#3b82f6'
     }).then(() => {
-        window.location.href = '/home'
+        
+        // redireciona para a página correta baseado no tipo
+        if (dados.tipo === 'aluno') {
+            window.location.href = '/home/aluno'
+        
+        } else if(dados.tipo === 'empresa') {
+            window.location.href = '/home/empresa'
+        }
     })
 
 

@@ -1,29 +1,37 @@
-# Dependências
+# dependências
 node_modules/
 
-# Variáveis de ambiente (NUNCA subir)
+# variáveis de ambiente (NUNCA subir)
 .env
 
 
-# Logs
+# logs
 logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Arquivos do sistema
+# arquivos do sistema
 .DS_Store
 Thumbs.db
+
+#anotacoes
+instrucoes.txt
+JWT.txt
 
 # IDE / editor
 .vscode/
 .cursor/
 
-# Build (caso use no futuro)
+# possiveis features
+database/new_mysql.sql
+
+
+# build (talvez use no futuro)
 dist/
 build/
 
-# Cache / temporários
+# cache (talvez use no futuro)
 .tmp/
 .cache/

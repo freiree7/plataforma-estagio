@@ -1,7 +1,7 @@
 USE railway;
 
 -- ========================
--- LIMPEZA (opcional)
+-- LIMPEZA
 -- ========================
 SET FOREIGN_KEY_CHECKS = 0;
 
@@ -9,6 +9,8 @@ DROP TABLE IF EXISTS candidaturas;
 DROP TABLE IF EXISTS vaga_habilidades;
 DROP TABLE IF EXISTS usuario_habilidades;
 DROP TABLE IF EXISTS vagas;
+DROP TABLE IF EXISTS empresas;
+DROP TABLE IF EXISTS alunos;
 DROP TABLE IF EXISTS perfis;
 DROP TABLE IF EXISTS habilidades;
 DROP TABLE IF EXISTS usuarios;
@@ -16,7 +18,7 @@ DROP TABLE IF EXISTS usuarios;
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- ========================
--- USUÁRIOS
+-- USUÁRIOS (BASE)
 -- ========================
 CREATE TABLE usuarios (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -28,14 +30,42 @@ CREATE TABLE usuarios (
 );
 
 -- ========================
--- PERFIL (apenas alunos)
+-- ALUNOS (RA)
+-- ========================
+CREATE TABLE alunos (
+  usuario_id INT PRIMARY KEY,
+  ra VARCHAR(50) NOT NULL UNIQUE,
+
+  CONSTRAINT fk_aluno_usuario
+    FOREIGN KEY (usuario_id)
+    REFERENCES usuarios(id)
+    ON DELETE CASCADE
+);
+
+-- ========================
+-- EMPRESAS (CNPJ)
+-- ========================
+CREATE TABLE empresas (
+  usuario_id INT PRIMARY KEY,
+  cnpj VARCHAR(20) NOT NULL UNIQUE,
+
+  CONSTRAINT fk_empresa_usuario
+    FOREIGN KEY (usuario_id)
+    REFERENCES usuarios(id)
+    ON DELETE CASCADE
+);
+
+-- ========================
+-- PERFIS (ALUNOS)
 -- ========================
 CREATE TABLE perfis (
   id INT AUTO_INCREMENT PRIMARY KEY,
   usuario_id INT UNIQUE,
+  foto_url VARCHAR(500),
   bio TEXT,
   linkedin VARCHAR(255),
   github VARCHAR(255),
+  telefone VARCHAR(20),
 
   CONSTRAINT fk_perfil_usuario
     FOREIGN KEY (usuario_id)
@@ -48,7 +78,8 @@ CREATE TABLE perfis (
 -- ========================
 CREATE TABLE habilidades (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  nome VARCHAR(100) NOT NULL UNIQUE
+  nome VARCHAR(100) NOT NULL UNIQUE,
+  categoria VARCHAR(80)
 );
 
 -- ========================
@@ -72,7 +103,7 @@ CREATE TABLE usuario_habilidades (
 );
 
 -- ========================
--- VAGAS
+-- VAGAS (EMPRESAS)
 -- ========================
 CREATE TABLE vagas (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -110,7 +141,7 @@ CREATE TABLE vaga_habilidades (
 );
 
 -- ========================
--- CANDIDATURAS
+-- CANDIDATURAS (ALUNOS)
 -- ========================
 CREATE TABLE candidaturas (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -132,6 +163,19 @@ CREATE TABLE candidaturas (
     ON DELETE CASCADE
 );
 
-CREATE INDEX idx_pedidos_usuario ON pedidos(id_usuario);
-CREATE INDEX idx_pagamento_pedido ON pagamentos(id_pedido);
-CREATE INDEX idx_produto_nome ON produtos(nome);
+INSERT INTO habilidades (nome, categoria) VALUES
+('JavaScript', 'Linguagens'),
+('Python', 'Linguagens'),
+('Java', 'Linguagens'),
+('TypeScript', 'Linguagens'),
+('SQL', 'Linguagens'),
+('React', 'Frameworks'),
+('Node.js', 'Frameworks'),
+('Express', 'Frameworks'),
+('Vue.js', 'Frameworks'),
+('Git', 'Ferramentas'),
+('Docker', 'Ferramentas'),
+('Figma', 'Ferramentas'),
+('Trabalho em equipe', 'Soft Skills'),
+('Comunicação', 'Soft Skills'),
+('Proatividade', 'Soft Skills');
