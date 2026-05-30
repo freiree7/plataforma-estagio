@@ -15,4 +15,8 @@ router.get('/home/empresa' , auth('empresa'), (req,res) =>{
     res.sendFile(path.resolve(__dirname,'../../../view/home_empresa.html' ))
 })
 
+router.get('/vagas/:id/candidatos', auth('empresa'), (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../../../view/candidatos.html'))
+})
+
 export default router

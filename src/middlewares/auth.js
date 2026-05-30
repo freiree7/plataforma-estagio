@@ -8,11 +8,6 @@ const auth = (tipoPermitido) => {
             const tokenCookie = req.cookies?.token
             const token = tokenHeader || tokenCookie
 
-           
-           // console.log('Cookie recebido:', req.cookies)
-            //console.log('Token encontrado:', token ? 'sim' : 'não')
-            //console.log('Tipo permitido:', tipoPermitido)
-
             if (!token) {
                 console.log('Bloqueado: sem token')
                 if (req.accepts('html')) return res.redirect('/login')
@@ -20,11 +15,10 @@ const auth = (tipoPermitido) => {
             }
 
             const decoded = jwt.verify(token, process.env.JWT_SECRET)
-            //console.log('Decoded:', decoded)
 
             if (tipoPermitido && decoded.tipo !== tipoPermitido) {
                 console.log('Bloqueado: tipo incorreto', decoded.tipo, '!==', tipoPermitido)
-                if (req.accepts('html')) 
+                if (req.accepts('html'))
                     return res.redirect('/login')
 
                 return res.status(403).json({ erro: 'Acesso não permitido' })
@@ -37,6 +31,24 @@ const auth = (tipoPermitido) => {
             console.log('Erro no auth:', error.message)
             if (req.accepts('html')) return res.redirect('/login')
             return res.status(401).json({ erro: 'Token inválido' })
+        }
+    }
+}
+
+/** Injeta req.usuario se houver token válido; segue sem usuário se não houver */
+export const authOpcional = () => {
+    return (req, res, next) => {
+        try {
+            const tokenHeader = req.headers.authorization?.split(' ')[1]
+            const tokenCookie = req.cookies?.token
+            const token = tokenHeader || tokenCookie
+
+            if (!token) return next()
+
+            req.usuario = jwt.verify(token, process.env.JWT_SECRET)
+            next()
+        } catch {
+            next()
         }
     }
 }

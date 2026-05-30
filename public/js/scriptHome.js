@@ -35,3 +35,15 @@ if (profileMenuButton && profileMenu) {
         }
     });
 }
+
+// Logout
+document.querySelectorAll('a[href="/logout"]').forEach(link => {
+    link.addEventListener('click', async (event) => {
+        event.preventDefault()
+        await fetch('/api/usuarios/logout', {
+            method: 'POST',
+            credentials: 'include'
+        })
+        window.location.href = '/login'
+    })
+})

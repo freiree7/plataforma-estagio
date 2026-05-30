@@ -1,0 +1,174 @@
+.hero-subtitle {
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+.link-voltar {
+    display: inline-flex;
+    margin-top: 4px;
+}
+
+.candidatos-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.candidato-card {
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    background: rgba(2, 6, 23, 0.55);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.candidato-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.candidato-nome {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.candidato-meta {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    line-height: 1.45;
+}
+
+.candidato-bio {
+    color: var(--text-main);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+.candidato-habilidades {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.candidato-chip {
+    padding: 4px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(34, 211, 238, 0.4);
+    background: rgba(14, 165, 233, 0.12);
+    color: #e0f2fe;
+    font-size: 0.82rem;
+    font-weight: 500;
+}
+
+.candidato-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.candidato-social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid var(--border-soft);
+    background: rgba(2, 6, 23, 0.55);
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.candidato-social-link:hover {
+    color: var(--accent);
+    border-color: rgba(34, 211, 238, 0.6);
+    background: rgba(14, 165, 233, 0.1);
+}
+
+.candidato-match {
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+}
+
+.candidato-match.match-total {
+    background: rgba(34, 197, 94, 0.15);
+    border: 1px solid rgba(34, 197, 94, 0.4);
+    color: #4ade80;
+}
+
+.candidato-match.match-parcial {
+    background: rgba(234, 179, 8, 0.15);
+    border: 1px solid rgba(234, 179, 8, 0.4);
+    color: #fbbf24;
+}
+
+.candidato-match.match-zero {
+    background: rgba(148, 163, 184, 0.1);
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    color: var(--text-muted);
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.status-badge.pendente {
+    border: 1px solid rgba(250, 204, 21, 0.5);
+    background: rgba(250, 204, 21, 0.12);
+    color: #fde68a;
+}
+
+.status-badge.aprovado {
+    border: 1px solid rgba(34, 197, 94, 0.5);
+    background: rgba(34, 197, 94, 0.12);
+    color: #86efac;
+}
+
+.status-badge.rejeitado {
+    border: 1px solid rgba(248, 113, 113, 0.5);
+    background: rgba(248, 113, 113, 0.12);
+    color: #fca5a5;
+}
+
+.candidato-actions {
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.btn-aprovar {
+    border-color: rgba(34, 197, 94, 0.6);
+    background: linear-gradient(140deg, rgba(22, 163, 74, 0.42), rgba(34, 197, 94, 0.2));
+}
+
+.btn-rejeitar {
+    border-color: rgba(248, 113, 113, 0.75);
+    background: linear-gradient(140deg, rgba(239, 68, 68, 0.35), rgba(248, 113, 113, 0.2));
+}
+
+@media (max-width: 900px) {
+    .candidatos-grid {
+        grid-template-columns: 1fr;
+    }
+}

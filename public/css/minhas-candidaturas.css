@@ -1,0 +1,130 @@
+:root {
+    --bg-main: #050816;
+    --text-main: #e5e7eb;
+    --text-muted: #94a3b8;
+    --accent: #22d3ee;
+    --accent-strong: #0ea5e9;
+    --border-soft: rgba(148, 163, 184, 0.25);
+    --shadow-soft: 0 12px 30px rgba(2, 6, 23, 0.35);
+}
+
+.candidaturas-content {
+    max-width: 900px;
+    margin: 26px auto;
+    padding: 0 24px 32px;
+}
+
+.candidaturas-card {
+    border: 1px solid var(--border-soft);
+    background: rgba(15, 23, 42, 0.62);
+    border-radius: 18px;
+    box-shadow: var(--shadow-soft);
+    padding: 32px;
+}
+
+.candidaturas-section-header {
+    margin-bottom: 24px;
+}
+
+.candidaturas-section-header h1 {
+    font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+    margin-bottom: 8px;
+}
+
+.candidaturas-section-header p {
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.candidatura-item {
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    background: rgba(2, 6, 23, 0.55);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.candidatura-item:last-child {
+    margin-bottom: 0;
+}
+
+.candidatura-item-titulo {
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.candidatura-item-titulo a {
+    color: var(--text-main);
+    text-decoration: none;
+}
+
+.candidatura-item-titulo a:hover {
+    color: var(--accent);
+}
+
+.candidatura-item-empresa {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.candidatura-item-meta {
+    color: var(--accent);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.candidatura-item-data {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+}
+
+.candidatura-item-status {
+    margin-top: 6px;
+}
+
+.candidatura-item-status .candidatura-badge {
+    display: inline-flex;
+    align-items: center;
+    height: 36px;
+    padding: 0 14px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+.badge-pendente {
+    background: rgba(234, 179, 8, 0.15);
+    border: 1px solid rgba(234, 179, 8, 0.5);
+    color: #fbbf24;
+}
+
+.badge-aprovado {
+    background: rgba(34, 197, 94, 0.15);
+    border: 1px solid rgba(34, 197, 94, 0.5);
+    color: #4ade80;
+}
+
+.badge-rejeitado {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.5);
+    color: #f87171;
+}
+
+.candidaturas-empty {
+    color: var(--text-muted);
+    line-height: 1.55;
+}
+
+@media (max-width: 620px) {
+    .candidaturas-content {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .candidaturas-card {
+        padding: 22px 18px;
+    }
+}

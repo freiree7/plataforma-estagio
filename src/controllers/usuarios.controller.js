@@ -38,6 +38,14 @@ class UsuariosController {
         }
     }
 
+    async logout(req, res) {
+        res.clearCookie('token', {
+            httpOnly: true,
+            sameSite: 'strict'
+        })
+        return res.status(200).json({ mensagem: 'Logout realizado com sucesso' })
+    }
+
 
 }
 

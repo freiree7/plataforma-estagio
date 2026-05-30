@@ -61,6 +61,14 @@ class PerfilRepository {
         return rows
     }
 
+    async findHabilidadeIdsByUsuario(usuarioId) {
+        const [rows] = await pool.execute(
+            'SELECT habilidade_id FROM usuario_habilidades WHERE usuario_id = ?',
+            [usuarioId]
+        )
+        return rows.map((r) => r.habilidade_id)
+    }
+
     async deleteHabilidadesByUsuario(usuarioId, connection) {
         await connection.execute(
             'DELETE FROM usuario_habilidades WHERE usuario_id = ?',

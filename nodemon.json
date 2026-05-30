@@ -1,0 +1,5 @@
+{
+  "watch": ["src", "config", "index.js", "database"],
+  "ext": "js,json",
+  "delay": 800
+}
