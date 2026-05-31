@@ -52,6 +52,17 @@ class PerfilController {
             return res.status(status).json({ erro: mensagem })
         }
     }
+
+    async updateFoto(req, res) {
+        try {
+            const resultado = await PerfilService.updateFoto(req.usuario.id, req.file)
+            return res.status(200).json(resultado)
+        } catch (error) {
+            const status = error.status || 500
+            const mensagem = error.mensagem || 'Erro no servidor'
+            return res.status(status).json({ erro: mensagem })
+        }
+    }
 }
 
 export default new PerfilController()

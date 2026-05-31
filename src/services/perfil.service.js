@@ -16,13 +16,13 @@ class PerfilService {
     async updatePerfil(usuarioId, dados) {
         console.log('dados recebidos no service:', dados)
 
-        // Busca os dados atuais do banco
+        // busca os dados atuais do banco
         const perfilAtual = await PerfilRepository.findPerfilCompleto(usuarioId)
         if (!perfilAtual) {
             throw { status: 404, mensagem: 'Perfil não encontrado' }
         }
     
-        // Usa o valor enviado ou mantém o que já está no banco
+        // usa o valor enviado ou mantém o que já está no banco
         const nome     = (typeof dados.nome === 'string' ? dados.nome.trim() : '') || perfilAtual.nome
         const email    = (typeof dados.email === 'string' ? dados.email.trim().toLowerCase() : '') || perfilAtual.email
         const ra       = (typeof dados.ra === 'string' ? dados.ra.trim().replace(/\D/g, '') : '') || perfilAtual.ra
@@ -31,7 +31,7 @@ class PerfilService {
         const github   = typeof dados.github === 'string' ? dados.github.trim() : null
         const telefone = typeof dados.telefone === 'string' ? dados.telefone.trim() : null
     
-        // Valida email duplicado só se mudou
+        // valida email duplicado só se mudou
         if (email !== perfilAtual.email) {
             const emailExistente = await UsuariosRepository.findByEmail(email)
             if (emailExistente && emailExistente.id !== usuarioId) {
@@ -39,7 +39,7 @@ class PerfilService {
             }
         }
     
-        // Valida RA duplicado só se mudou
+        // valida RA duplicado só se mudou
         if (ra !== perfilAtual.ra) {
             if (ra.length !== 10) {
                 throw { status: 400, mensagem: 'RA inválido — deve conter 10 dígitos' }
@@ -114,6 +114,18 @@ class PerfilService {
         }
 
         return PerfilRepository.findHabilidadesByUsuario(usuarioId)
+    }
+
+    async updateFoto(usuarioId, file) {
+        if (!file) {
+            throw { status: 400, mensagem: 'Nenhum arquivo enviado' }
+        }
+
+        const fotoUrl = `/uploads/${file.filename}`
+
+        await PerfilRepository.updateFotoUrl(usuarioId, fotoUrl)
+
+        return { fotoUrl }
     }
 }
 

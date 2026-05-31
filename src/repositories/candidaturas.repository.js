@@ -38,6 +38,7 @@ class CandidaturasRepository {
                 p.github,
                 p.linkedin,
                 p.telefone,
+                p.foto_url,
                 (
                     SELECT GROUP_CONCAT(uh.habilidade_id)
                     FROM usuario_habilidades uh

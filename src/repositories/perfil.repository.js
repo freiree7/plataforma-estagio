@@ -37,7 +37,7 @@ class PerfilRepository {
             [ra, usuarioId]
         )
     
-        // INSERT se não existir, UPDATE se já existir
+        // insert se não existir, update se já existir
         await conn.execute(
             `INSERT INTO perfis (usuario_id, bio, linkedin, github, telefone)
              VALUES (?, ?, ?, ?, ?)
@@ -87,6 +87,15 @@ class PerfilRepository {
         await connection.execute(
             `INSERT INTO usuario_habilidades (usuario_id, habilidade_id) VALUES ${values}`,
             params
+        )
+    }
+
+    async updateFotoUrl(usuarioId, fotoUrl) {
+        await pool.execute(
+            `INSERT INTO perfis (usuario_id, foto_url)
+             VALUES (?, ?)
+             ON DUPLICATE KEY UPDATE foto_url = VALUES(foto_url)`,
+            [usuarioId, fotoUrl]
         )
     }
 }

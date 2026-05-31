@@ -402,7 +402,7 @@ body {
     color: #f87171;
 }
 
-/* SweetAlert2 — botão confirmar alinhado à paleta do site */
+/* sweetAlert2 — botão confirmar alinhado à paleta do site */
 .swal2-styled.swal2-confirm {
     background: linear-gradient(140deg, #0ea5e9, #22d3ee) !important;
     border: 1px solid rgba(34, 211, 238, 0.55) !important;

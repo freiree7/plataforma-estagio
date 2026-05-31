@@ -21,6 +21,8 @@ const githubInput = document.getElementById("perfilGithubInput");
 const linkedinView = document.getElementById("perfilLinkedinView");
 const linkedinInput = document.getElementById("perfilLinkedinInput");
 const avatarIniciais = document.getElementById("perfilAvatarIniciais");
+const perfilAvatarEl = document.getElementById("perfilAvatar");
+const fotoInput = document.getElementById("fotoInput");
 
 /** @type {{ id: number, nome: string, categoria?: string }[]} */
 let habilidadesUsuario = [];
@@ -43,6 +45,27 @@ function initialsFromNome(nome) {
 function syncAvatarInitials() {
     if (!avatarIniciais || !nomeView) return;
     avatarIniciais.textContent = initialsFromNome(nomeView.textContent);
+}
+
+function aplicarFoto(fotoUrl) {
+    if (!perfilAvatarEl) return;
+
+    const imgExistente = perfilAvatarEl.querySelector("img");
+    if (imgExistente) imgExistente.remove();
+
+    if (!fotoUrl) {
+        if (avatarIniciais) avatarIniciais.style.display = "";
+        return;
+    }
+
+    const img = document.createElement("img");
+    img.src = fotoUrl;
+    img.alt = "Foto de perfil";
+
+    if (avatarIniciais) avatarIniciais.style.display = "none";
+
+    const overlay = perfilAvatarEl.querySelector(".perfil-avatar-overlay");
+    perfilAvatarEl.insertBefore(img, overlay);
 }
 
 function displayText(value, fallback = "—") {
@@ -84,7 +107,7 @@ function aplicarPerfilNaTela(perfil) {
     emailView.textContent = displayText(perfil.email, "usuario@email.com");
     raView.textContent = displayText(perfil.ra, "—");
 
-    // Bio — se vazio deixa o elemento vazio (o :empty no CSS esconde)
+    // bio — se vazio deixa o elemento vazio (o :empty no CSS esconde)
     if (bioView) {
         const bioTexto = (perfil.bio || "").trim();
         bioView.textContent = bioTexto;
@@ -97,6 +120,10 @@ function aplicarPerfilNaTela(perfil) {
     applySocialDisplay(githubView, perfil.github || "");
     applySocialDisplay(linkedinView, perfil.linkedin || "");
     syncAvatarInitials();
+
+    if (perfil.foto_url) {
+        aplicarFoto(perfil.foto_url);
+    }
 }
 
 function renderHabilidadesView() {
@@ -274,6 +301,61 @@ Promise.all([carregarPerfil(), carregarHabilidadesUsuario()]).catch((error) => {
         editFeedback.textContent = error.message;
     }
 });
+
+if (perfilAvatarEl && fotoInput) {
+    perfilAvatarEl.addEventListener("click", () => {
+        fotoInput.click();
+    });
+
+    fotoInput.addEventListener("change", async () => {
+        const file = fotoInput.files[0];
+        if (!file) return;
+
+        const maxSize = 3 * 1024 * 1024;
+        if (file.size > maxSize) {
+            if (typeof Swal !== "undefined") {
+                Swal.fire({ icon: "error", title: "Arquivo muito grande", text: "Máximo 3MB." });
+            } else if (editFeedback) {
+                editFeedback.textContent = "Arquivo muito grande. Máximo 3MB.";
+            }
+            return;
+        }
+
+        perfilAvatarEl.classList.add("uploading");
+
+        try {
+            const formData = new FormData();
+            formData.append("foto", file);
+
+            const resposta = await fetch("/api/usuarios/perfil/foto", {
+                method: "POST",
+                credentials: "include",
+                body: formData
+            });
+
+            const data = await resposta.json().catch(() => ({}));
+
+            if (!resposta.ok) {
+                throw new Error(data.erro || "Erro ao fazer upload");
+            }
+
+            aplicarFoto(data.fotoUrl);
+
+            if (editFeedback) {
+                editFeedback.textContent = "Foto atualizada com sucesso.";
+            }
+        } catch (error) {
+            if (typeof Swal !== "undefined") {
+                Swal.fire({ icon: "error", title: "Erro no upload", text: error.message });
+            } else if (editFeedback) {
+                editFeedback.textContent = error.message;
+            }
+        } finally {
+            perfilAvatarEl.classList.remove("uploading");
+            fotoInput.value = "";
+        }
+    });
+}
 
 if (
     editButton &&

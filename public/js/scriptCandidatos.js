@@ -74,6 +74,26 @@ function criarCardCandidato(candidato, vagaId) {
     const header = document.createElement('div')
     header.className = 'candidato-card-header'
 
+    const avatar = document.createElement('div')
+    avatar.className = 'candidato-avatar'
+
+    if (candidato.foto_url) {
+        const img = document.createElement('img')
+        img.src = candidato.foto_url
+        img.alt = candidato.nome || 'Foto'
+        img.className = 'candidato-avatar-img'
+        avatar.appendChild(img)
+    } else {
+        const parts = (candidato.nome || 'CA').trim().split(/\s+/).filter(Boolean)
+        const iniciais = parts.length === 1
+            ? parts[0].slice(0, 2).toUpperCase()
+            : (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+        avatar.textContent = iniciais
+    }
+
+    const headerInfo = document.createElement('div')
+    headerInfo.className = 'candidato-header-info'
+
     const nome = document.createElement('h3')
     nome.className = 'candidato-nome'
     nome.textContent = candidato.nome || 'Candidato'
@@ -82,8 +102,11 @@ function criarCardCandidato(candidato, vagaId) {
     badge.className = `status-badge ${candidato.status || 'pendente'}`
     badge.textContent = STATUS_LABEL[candidato.status] || candidato.status
 
-    header.appendChild(nome)
-    header.appendChild(badge)
+    headerInfo.appendChild(nome)
+    headerInfo.appendChild(badge)
+
+    header.appendChild(avatar)
+    header.appendChild(headerInfo)
 
     const meta = document.createElement('p')
     meta.className = 'candidato-meta'

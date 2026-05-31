@@ -14,7 +14,7 @@ const router = Router()
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-//API — retornam JSON
+// api — retornam JSON
 router.use('/api/usuarios', apiUsuarios)
 router.use('/api', perfilRouter)
 router.use('/api/vagas', apiVagas)
