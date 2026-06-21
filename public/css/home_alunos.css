@@ -474,3 +474,11 @@ body {
         min-width: 0;
     }
 }
+
+.vaga-card-logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid var(--border-soft);
+}

@@ -66,7 +66,7 @@ async function atualizarStatus(candidaturaId, status) {
     }
 }
 
-function criarCardCandidato(candidato, vagaId) {
+function criarCardCandidato(candidato, vagaId, setObrigatorias = new Set()) {
     const card = document.createElement('article')
     card.className = 'candidato-card'
     card.dataset.candidaturaId = String(candidato.id)
@@ -142,9 +142,18 @@ function criarCardCandidato(candidato, vagaId) {
     if (Array.isArray(candidato.habilidades) && candidato.habilidades.length > 0) {
         const habWrap = document.createElement('div')
         habWrap.className = 'candidato-habilidades'
+
         for (const hab of candidato.habilidades) {
-            habWrap.appendChild(criarChipHabilidade(hab.nome))
+            const chip = document.createElement('span')
+            const eCompativel = setObrigatorias.has(Number(hab.id))
+            chip.className = eCompativel
+                ? 'candidato-chip candidato-chip-match'
+                : 'candidato-chip'
+            chip.textContent = hab.nome
+            if (eCompativel) chip.title = 'Habilidade obrigatória da vaga'
+            habWrap.appendChild(chip)
         }
+
         card.appendChild(habWrap)
     }
 
@@ -259,8 +268,14 @@ async function carregarCandidatos() {
     const grid = document.createElement('div')
     grid.className = 'candidatos-grid'
 
+    const vagaHabilidadesObrigatorias = (data.vaga?.habilidades || [])
+        .filter((h) => h.nivel === 'obrigatorio')
+        .map((h) => h.id)
+
+    const setObrigatorias = new Set(vagaHabilidadesObrigatorias.map(Number))
+
     for (const candidato of candidatos) {
-        grid.appendChild(criarCardCandidato(candidato, vagaId))
+        grid.appendChild(criarCardCandidato(candidato, vagaId, setObrigatorias))
     }
 
     listaCandidatos.appendChild(grid)

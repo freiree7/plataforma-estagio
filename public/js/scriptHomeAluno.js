@@ -157,6 +157,14 @@ function criarCardAluno(vaga) {
     titulo.className = 'vaga-card-titulo'
     titulo.textContent = vaga.titulo
 
+    if (vaga.logo_url) {
+        const logo = document.createElement('img')
+        logo.src = vaga.logo_url
+        logo.alt = nomeEmpresa(vaga)
+        logo.className = 'vaga-card-logo'
+        card.appendChild(logo)
+    }
+
     const empresa = document.createElement('p')
     empresa.className = 'vaga-card-empresa'
     empresa.textContent = `Empresa: ${nomeEmpresa(vaga)}`

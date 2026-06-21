@@ -1,3 +1,176 @@
+// ========================
+// dashboard
+// ========================
+
+let chartStatus = null
+let chartVagas = null
+
+const CHART_COLORS = {
+    pendente:  'rgba(251, 191, 36,  0.85)',
+    aprovado:  'rgba(74,  222, 128, 0.85)',
+    rejeitado: 'rgba(248, 113, 113, 0.85)'
+}
+
+const CHART_BORDERS = {
+    pendente:  'rgba(251, 191, 36,  1)',
+    aprovado:  'rgba(74,  222, 128, 1)',
+    rejeitado: 'rgba(248, 113, 113, 1)'
+}
+
+function preencherMetricaCard(id, valor) {
+    const el = document.getElementById(id)
+    if (el) el.textContent = valor ?? '0'
+}
+
+function renderizarChartStatus(candidaturas) {
+    const canvas = document.getElementById('chartStatus')
+    if (!canvas) return
+
+    const { pendentes, aprovados, rejeitados } = candidaturas
+
+    if (chartStatus) { chartStatus.destroy(); chartStatus = null }
+
+    chartStatus = new Chart(canvas, {
+        type: 'doughnut',
+        data: {
+            labels: ['Pendentes', 'Aprovados', 'Rejeitados'],
+            datasets: [{
+                data: [
+                    Number(pendentes) || 0,
+                    Number(aprovados) || 0,
+                    Number(rejeitados) || 0
+                ],
+                backgroundColor: [
+                    CHART_COLORS.pendente,
+                    CHART_COLORS.aprovado,
+                    CHART_COLORS.rejeitado
+                ],
+                borderColor: [
+                    CHART_BORDERS.pendente,
+                    CHART_BORDERS.aprovado,
+                    CHART_BORDERS.rejeitado
+                ],
+                borderWidth: 1,
+                hoverOffset: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '65%',
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: '#94a3b8',
+                        font: { size: 11, family: 'Inter' },
+                        padding: 12,
+                        usePointStyle: true,
+                        pointStyleWidth: 8
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: (ctx) => ` ${ctx.label}: ${ctx.parsed}`
+                    }
+                }
+            }
+        }
+    })
+}
+
+function renderizarChartVagas(candidatosPorVaga) {
+    const canvas = document.getElementById('chartVagas')
+    if (!canvas) return
+
+    if (chartVagas) { chartVagas.destroy(); chartVagas = null }
+
+    const labels = candidatosPorVaga.map(v =>
+        v.titulo.length > 22 ? v.titulo.slice(0, 22) + '…' : v.titulo
+    )
+    const valores = candidatosPorVaga.map(v => Number(v.total) || 0)
+
+    chartVagas = new Chart(canvas, {
+        type: 'bar',
+        data: {
+            labels,
+            datasets: [{
+                label: 'Candidatos',
+                data: valores,
+                backgroundColor: 'rgba(14, 165, 233, 0.45)',
+                borderColor: 'rgba(34, 211, 238, 0.9)',
+                borderWidth: 1,
+                borderRadius: 6,
+                borderSkipped: false
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: (ctx) => ` ${ctx.parsed.y} candidato${ctx.parsed.y === 1 ? '' : 's'}`
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: {
+                        color: '#94a3b8',
+                        font: { size: 10, family: 'Inter' },
+                        maxRotation: 30
+                    },
+                    grid: { color: 'rgba(148, 163, 184, 0.08)' }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        color: '#94a3b8',
+                        font: { size: 11, family: 'Inter' },
+                        stepSize: 1,
+                        precision: 0
+                    },
+                    grid: { color: 'rgba(148, 163, 184, 0.08)' }
+                }
+            }
+        }
+    })
+}
+
+async function carregarDashboard() {
+    try {
+        const resposta = await fetch('/api/candidaturas/metricas', { credentials: 'include' })
+
+        if (resposta.status === 401 || resposta.status === 403) {
+            window.location.href = '/login'
+            return
+        }
+
+        if (!resposta.ok) return
+
+        const { vagas, candidaturas, candidatosPorVaga } = await resposta.json()
+
+        preencherMetricaCard('metricTotalVagas',        vagas.total_vagas)
+        preencherMetricaCard('metricTotalCandidaturas', candidaturas.total_candidaturas)
+        preencherMetricaCard('metricPendentes',         candidaturas.pendentes)
+        preencherMetricaCard('metricAprovados',         candidaturas.aprovados)
+        preencherMetricaCard('metricRejeitados',        candidaturas.rejeitados)
+
+        const vagasAtivas = document.getElementById('metricVagasAtivas')
+        if (vagasAtivas) vagasAtivas.textContent = `${vagas.vagas_ativas ?? 0} ativas`
+
+        renderizarChartStatus(candidaturas)
+        renderizarChartVagas(candidatosPorVaga)
+
+    } catch (err) {
+        console.error('Erro ao carregar dashboard:', err)
+    }
+}
+
+carregarDashboard()
+
 const vagasEmpresaContainer = document.getElementById('vagasEmpresa')
 const btnNovaVaga = document.getElementById('btnNovaVaga')
 

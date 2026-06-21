@@ -209,3 +209,19 @@
         padding: 22px 18px;
     }
 }
+
+.detalhe-content .skill-chip-match {
+    border-color: rgba(34, 197, 94, 0.7);
+    background: rgba(34, 197, 94, 0.18);
+    color: #86efac;
+    font-weight: 600;
+}
+
+.detalhe-empresa-logo {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 1px solid var(--border-soft);
+    margin-bottom: 12px;
+}

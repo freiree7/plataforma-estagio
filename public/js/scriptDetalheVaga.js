@@ -67,7 +67,7 @@ function criarSecao(titulo, conteudo, isHtml = false) {
     return section
 }
 
-function criarSecaoHabilidades(titulo, habilidades) {
+function criarSecaoHabilidades(titulo, habilidades, compativeisSet = null) {
     const section = document.createElement('section')
     section.className = 'detalhe-section'
 
@@ -80,8 +80,10 @@ function criarSecaoHabilidades(titulo, habilidades) {
 
     for (const hab of habilidades) {
         const chip = document.createElement('span')
-        chip.className = 'skill-chip'
+        const eCompativel = compativeisSet && compativeisSet.has(Number(hab.id))
+        chip.className = eCompativel ? 'skill-chip skill-chip-match' : 'skill-chip'
         chip.textContent = hab.nome
+        if (eCompativel) chip.title = 'Você possui esta habilidade'
         chips.appendChild(chip)
     }
 
@@ -223,6 +225,15 @@ function renderizarVaga(vaga) {
     prazo.textContent = linhasPrazo.join(' • ') || 'Prazo e localizacao nao informados'
 
     container.appendChild(voltar)
+
+    if (vaga.logo_url) {
+        const logo = document.createElement('img')
+        logo.src = vaga.logo_url
+        logo.alt = nomeEmpresa(vaga)
+        logo.className = 'detalhe-empresa-logo'
+        container.appendChild(logo)
+    }
+
     container.appendChild(titulo)
     container.appendChild(empresa)
     container.appendChild(meta)
@@ -241,10 +252,17 @@ function renderizarVaga(vaga) {
     const diferenciais = habilidades.filter((h) => h.nivel === 'diferencial')
 
     if (obrigatorias.length > 0) {
-        container.appendChild(criarSecaoHabilidades('Habilidades obrigatorias', obrigatorias))
+        const setAluno = habilidadesAluno.length > 0
+            ? new Set(habilidadesAluno.map(Number))
+            : null
 
-        if (habilidadesAluno.length > 0) {
-            const setAluno = new Set(habilidadesAluno.map(Number))
+        container.appendChild(criarSecaoHabilidades(
+            'Habilidades obrigatorias',
+            obrigatorias,
+            setAluno
+        ))
+
+        if (setAluno) {
             const matches = obrigatorias.filter((h) => setAluno.has(Number(h.id))).length
             const badgeMatch = criarBadgeMatch({ total: obrigatorias.length, compativeis: matches })
             if (badgeMatch) container.appendChild(badgeMatch)
@@ -252,7 +270,15 @@ function renderizarVaga(vaga) {
     }
 
     if (diferenciais.length > 0) {
-        container.appendChild(criarSecaoHabilidades('Habilidades diferenciais', diferenciais))
+        const setAluno = habilidadesAluno.length > 0
+            ? new Set(habilidadesAluno.map(Number))
+            : null
+
+        container.appendChild(criarSecaoHabilidades(
+            'Habilidades diferenciais',
+            diferenciais,
+            setAluno
+        ))
     }
 
     const actions = document.createElement('div')

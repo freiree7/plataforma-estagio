@@ -51,6 +51,7 @@ class VagasRepository {
             SELECT
                 v.*,
                 e.nome_fantasia,
+                e.logo_url,
                 u.nome AS nome_empresa,
                 (
                     SELECT GROUP_CONCAT(vh.habilidade_id)
@@ -100,6 +101,7 @@ class VagasRepository {
             SELECT
                 v.*,
                 e.nome_fantasia,
+                e.logo_url,
                 u.nome AS nome_empresa
             FROM vagas v
             JOIN usuarios u ON u.id = v.empresa_id

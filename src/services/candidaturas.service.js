@@ -95,7 +95,11 @@ class CandidaturasService {
         )
 
         return {
-            vaga: { id: vagaResumo.id, titulo: vagaResumo.titulo },
+            vaga: {
+                id: vagaResumo.id,
+                titulo: vagaResumo.titulo,
+                habilidades: vagaCompleta?.habilidades || []
+            },
             candidatos: candidatosComHabilidades
         }
     }

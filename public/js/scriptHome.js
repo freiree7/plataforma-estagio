@@ -36,7 +36,7 @@ if (profileMenuButton && profileMenu) {
     });
 }
 
-// logout
+// Logout
 document.querySelectorAll('a[href="/logout"]').forEach(link => {
     link.addEventListener('click', async (event) => {
         event.preventDefault()
@@ -46,9 +46,9 @@ document.querySelectorAll('a[href="/logout"]').forEach(link => {
         })
         window.location.href = '/login'
     })
+})
 
-
-// atualiza o avatar da navbar com foto e nome do usuário logado
+// Atualiza avatar da navbar com foto e nome do usuário logado
 async function carregarAvatarNav() {
     const avatarCircle = document.querySelector('.avatar-circle')
     const avatarName = document.querySelector('.avatar-name')
@@ -56,31 +56,52 @@ async function carregarAvatarNav() {
     if (!avatarCircle) return
 
     try {
-        const resposta = await fetch('/api/usuarios/perfil', { credentials: 'include' })
-        if (!resposta.ok) return
+        let perfil = null
+        let fotoUrl = null
+        let nomeExibido = null
 
-        const perfil = await resposta.json()
+        const respostaAluno = await fetch('/api/usuarios/perfil', { credentials: 'include' })
 
-        // atualiza o nome no botão do avatar
-        if (avatarName && perfil.nome) {
-            avatarName.textContent = perfil.nome.split(' ')[0] // só o primeiro nome
+        if (respostaAluno.ok) {
+            const dados = await respostaAluno.json()
+
+            // GET /api/usuarios/perfil retorna 200 para qualquer usuário autenticado
+            // por isso é necessário checar o campo tipo
+            if (dados.tipo === 'empresa') {
+                // Busca perfil específico da empresa
+                const respostaEmpresa = await fetch('/api/usuarios/empresa/perfil', { credentials: 'include' })
+                if (respostaEmpresa.ok) {
+                    perfil = await respostaEmpresa.json()
+                    fotoUrl = perfil.logo_url || null
+                    nomeExibido = perfil.nome_fantasia || perfil.nome || ''
+                }
+            } else {
+                perfil = dados
+                fotoUrl = perfil.foto_url || null
+                nomeExibido = perfil.nome?.split(' ')[0] || ''
+            }
         }
 
-        // se tem foto, substitui as iniciais por imagem
-        if (perfil.foto_url) {
+        if (!perfil) return
+
+        // Atualiza nome
+        if (avatarName) avatarName.textContent = nomeExibido
+
+        // Se tem foto ou logo, substitui as iniciais por imagem
+        if (fotoUrl) {
             avatarCircle.innerHTML = ''
             avatarCircle.style.padding = '0'
             avatarCircle.style.overflow = 'hidden'
 
             const img = document.createElement('img')
-            img.src = perfil.foto_url
-            img.alt = perfil.nome || 'Foto de perfil'
+            img.src = fotoUrl
+            img.alt = nomeExibido
             img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:50%;display:block'
             avatarCircle.appendChild(img)
             return
         }
 
-        // sem foto — atualiza as iniciais
+        // Sem foto — atualiza iniciais
         if (perfil.nome) {
             const parts = perfil.nome.trim().split(/\s+/).filter(Boolean)
             let iniciais = 'PF'
@@ -90,9 +111,8 @@ async function carregarAvatarNav() {
         }
 
     } catch {
-        //  não quebra a página se falhar
+        // Silencioso — não quebra a página se falhar
     }
 }
 
 carregarAvatarNav()
-})

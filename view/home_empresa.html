@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/home_empresas.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 
 <body>
@@ -20,21 +21,11 @@
 
             <ul class="nav-list" aria-label="Navegação principal">
                 <li><a href="/home/empresa" class="nav-btn active">Home</a></li>
-                <li><a href="/empresas" class="nav-btn">Empresas</a></li>
+                <li><a href="/perfil/empresa" class="nav-btn">Perfil</a></li>
             </ul>
 
             <div class="actions">
-                <form class="search-form" role="search" aria-label="Buscar na plataforma">
-                    <label for="global-search" class="sr-only">Buscar</label>
-                    <input
-                        id="global-search"
-                        class="search-input"
-                        type="search"
-                        placeholder="Pesquisar"
-                        autocomplete="off"
-                    >
-                </form>
-
+               
                 <div class="profile-dropdown">
                     <button
                         id="profileMenuButton"
@@ -49,7 +40,7 @@
                     </button>
 
                     <div id="profileMenu" class="dropdown-menu" role="menu" aria-hidden="true">
-                        <a href="/perfil" class="dropdown-item" role="menuitem">Acessar perfil</a>
+                        <a href="/perfil/empresa" class="dropdown-item" role="menuitem">Acessar perfil</a>
                         <a href="/logout" class="dropdown-item danger" role="menuitem">Logout</a>
                     </div>
                 </div>
@@ -62,6 +53,47 @@
             <p class="hero-kicker">Plataforma de estagios</p>
             <h1>Bem-vindo ao Estagia Ai</h1>
             <p>Gerencie suas vagas de estagio e acompanhe os candidatos.</p>
+        </section>
+
+        <section class="dashboard-section" aria-label="Dashboard">
+            <div class="dashboard-cards" id="dashboardCards">
+                <div class="metric-card" id="cardTotalVagas">
+                    <span class="metric-label">Total de vagas</span>
+                    <span class="metric-value" id="metricTotalVagas">—</span>
+                    <span class="metric-sub" id="metricVagasAtivas">— ativas</span>
+                </div>
+                <div class="metric-card" id="cardTotalCandidaturas">
+                    <span class="metric-label">Total de candidaturas</span>
+                    <span class="metric-value" id="metricTotalCandidaturas">—</span>
+                </div>
+                <div class="metric-card metric-pendente">
+                    <span class="metric-label">Pendentes</span>
+                    <span class="metric-value" id="metricPendentes">—</span>
+                </div>
+                <div class="metric-card metric-aprovado">
+                    <span class="metric-label">Aprovados</span>
+                    <span class="metric-value" id="metricAprovados">—</span>
+                </div>
+                <div class="metric-card metric-rejeitado">
+                    <span class="metric-label">Rejeitados</span>
+                    <span class="metric-value" id="metricRejeitados">—</span>
+                </div>
+            </div>
+
+            <div class="dashboard-charts">
+                <div class="chart-card">
+                    <h3 class="chart-title">Distribuição de candidaturas</h3>
+                    <div class="chart-wrapper chart-doughnut-wrapper">
+                        <canvas id="chartStatus"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <h3 class="chart-title">Candidatos por vaga</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="chartVagas"></canvas>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <section class="vagas-section" aria-label="Minhas vagas">

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil da Empresa | Estagia Ai</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/perfil.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <header class="top-nav-wrapper">
+        <nav class="top-nav">
+            <a href="/home/empresa" class="brand" aria-label="Ir para pagina inicial">
+                <span class="brand-dot"></span>
+                <span class="brand-text">Estagia Ai</span>
+            </a>
+            <ul class="nav-list" aria-label="Navegacao principal">
+                <li><a href="/home/empresa" class="nav-btn">Home</a></li>
+                <li><a href="/perfil/empresa" class="nav-btn active">Perfil</a></li>
+            </ul>
+            <div class="actions">
+                <div class="profile-dropdown">
+                    <button
+                        id="profileMenuButton"
+                        class="avatar-btn"
+                        type="button"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        aria-label="Abrir menu do perfil"
+                    >
+                        <span class="avatar-circle">EM</span>
+                        <span class="avatar-name">Empresa</span>
+                    </button>
+                    <div id="profileMenu" class="dropdown-menu" role="menu" aria-hidden="true">
+                        <a href="/perfil/empresa" class="dropdown-item" role="menuitem">Acessar perfil</a>
+                        <a href="/logout" class="dropdown-item danger" role="menuitem">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="perfil-content">
+        <section class="perfil-card">
+            <p class="perfil-kicker">Dados da empresa</p>
+            <h1>Perfil da empresa</h1>
+            <p class="perfil-description">
+                Visualize e edite as informacoes da sua empresa.
+            </p>
+
+            <div class="perfil-layout">
+                <aside class="perfil-photo-col" aria-label="Logo da empresa">
+                    <div class="perfil-avatar perfil-avatar-upload" id="perfilAvatar" title="Clique para trocar a logo">
+                        <span class="perfil-avatar-text" id="perfilAvatarIniciais" aria-hidden="true">EM</span>
+                        <div class="perfil-avatar-overlay" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                                <circle cx="12" cy="13" r="4"/>
+                            </svg>
+                        </div>
+                        <input type="file" id="logoInput" accept="image/jpeg,image/png,image/webp" style="display:none" aria-label="Selecionar logo da empresa">
+                    </div>
+                    <p class="perfil-photo-hint" id="perfilPhotoHint">Clique para adicionar logo</p>
+
+                    <p class="perfil-bio-view" id="perfilDescricao"></p>
+                    <textarea
+                        class="perfil-bio-input"
+                        id="perfilDescricaoInput"
+                        rows="4"
+                        placeholder="Descreva sua empresa..."
+                        aria-label="Editar descricao"
+                    ></textarea>
+                </aside>
+
+                <div class="perfil-data-col">
+                    <div class="perfil-grid">
+
+                        <article class="field-card field-card-full">
+                            <span class="field-label">CNPJ</span>
+                            <span class="field-value view-value" id="perfilCnpj">—</span>
+                        </article>
+
+                        <article class="field-card field-card-full">
+                            <span class="field-label">Nome Fantasia</span>
+                            <span class="field-value view-value" id="perfilNomeFantasia">—</span>
+                            <input class="field-input" id="perfilNomeFantasiaInput" type="text"
+                                placeholder="Nome exibido nas vagas" aria-label="Editar nome fantasia">
+                        </article>
+
+                        <article class="field-card field-card-full">
+                            <span class="field-label">Razao Social</span>
+                            <span class="field-value view-value" id="perfilNome">—</span>
+                            <input class="field-input" id="perfilNomeInput" type="text"
+                                aria-label="Editar razao social">
+                        </article>
+
+                        <article class="field-card field-card-full">
+                            <span class="field-label">Email</span>
+                            <span class="field-value view-value" id="perfilEmail">—</span>
+                            <input class="field-input" id="perfilEmailInput" type="email"
+                                aria-label="Editar email">
+                        </article>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="perfil-actions">
+                <button type="button" class="edit-btn" id="editarPerfilBtn">Editar dados</button>
+                <button type="button" class="edit-btn save-btn" id="salvarPerfilBtn">Salvar</button>
+                <button type="button" class="edit-btn cancel-btn" id="cancelarEdicaoBtn">Cancelar</button>
+            </div>
+            <p class="edit-feedback" id="editFeedback" aria-live="polite"></p>
+        </section>
+    </main>
+
+    <script src="/js/scriptHome.js"></script>
+    <script src="/js/scriptPerfilEmpresa.js"></script>
+</body>
+</html>

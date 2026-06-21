@@ -41,6 +41,10 @@ router.get('/minhas-candidaturas', auth('aluno'), (req, res) => {
     res.sendFile(path.resolve(__dirname, '../../view/minhas-candidaturas.html'))
 })
 
+router.get('/perfil/empresa', auth('empresa'), (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../../view/perfil_empresa.html'))
+})
+
 router.use('/', viewsHome)
 router.use('/', viewsUsuarios)
 router.use('/', viewsPerfil)
